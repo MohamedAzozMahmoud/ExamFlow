@@ -20,20 +20,20 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(), // استمر في استخدامه، فهو رائع للأداء
     provideBrowserGlobalErrorListeners(),
 
-    {
-      provide: ErrorHandler,
-      useValue: Sentry.createErrorHandler({
-        showDialog: false,
-      }),
-    },
-    {
-      provide: Sentry.TraceService,
-      deps: [Router],
-    },
+    // {
+    //   provide: ErrorHandler,
+    //   useValue: Sentry.createErrorHandler({
+    //     showDialog: false,
+    //   }),
+    // },
+    // {
+    //   provide: Sentry.TraceService,
+    //   deps: [Router],
+    // },
 
-    provideAppInitializer(() => {
-      inject(Sentry.TraceService);
-    }),
+    // provideAppInitializer(() => {
+    //   inject(Sentry.TraceService);
+    // }),
 
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, loadingInterceptor])),
