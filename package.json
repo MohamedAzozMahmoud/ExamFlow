@@ -7,7 +7,7 @@
     "build": "ng build && npm run sentry:sourcemaps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org mohamed-kp --project javascript-angular ./dist && sentry-cli sourcemaps upload --org mohamed-kp --project javascript-angular ./dist",
+    "sentry:sourcemaps": "",
     "test:e2e": "playwright test"
   },
   "prettier": {
