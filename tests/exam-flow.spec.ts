@@ -39,16 +39,18 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     // 3. التأكد من الوصول للداشبورد بدلاً من شاشة تسجيل الدخول
     await expect(page).toHaveURL(/.*student.*/, { timeout: 15000 });
     
-    // 4. انتظار تحميل بطاقة الامتحانات المتاحة والضغط على الانضمام الأول
-    console.log('⏳ في انتظار ظهور امتحان متاح...');
+    // 4. انتظار تحميل زر الانضمام للامتحان والتأكد من أنه مفعل (غير معطل)
+    console.log('⏳ في انتظار ظهور امتحان متاح وتفعيل زر الانضمام...');
+    const joinBtn = page.locator('app-active-exams-card .join-btn').first();
     
-    // انتظار تحميل مكون active-exams-card
-    const activeExamsCard = page.locator('app-active-exams-card');
-    await expect(activeExamsCard.first()).toBeVisible({ timeout: 30000 });
-
-    const joinBtn = page.locator('.join-btn');
-    await expect(joinBtn.first()).toBeVisible({ timeout: 20000 });
-    await joinBtn.first().click();
+    // الانتظار حتى يظهر الزر في الشاشة
+    await expect(joinBtn).toBeVisible({ timeout: 30000 });
+    
+    // الأهم: الانتظار حتى يصبح الزر مفعلاً (أي أن فترة السماح بالدخول قد بدأت)
+    console.log('⏳ في انتظار تفعيل زر الانضمام (بناءً على التوقيت)...');
+    await expect(joinBtn).toBeEnabled({ timeout: 300000 }); // قد ننتظر عدة دقائق حسب إعدادات الامتحان
+    
+    await joinBtn.click();
 
     // 5. نتأكد من الوصول لجلسة الامتحان
     console.log('✅ تم الدخول لجلسة الامتحان بنجاح!');
