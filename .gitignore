@@ -47,11 +47,3 @@ Thumbs.db
 
 # GitHub Skills
 .github/skills/
-
-# ExamFlow
-.examflow/
-tests/
-exam-flow.spec.ts
-playwright.config.ts
-workflows/
-e2e-playwright.yml
