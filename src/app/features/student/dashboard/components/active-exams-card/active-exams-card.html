@@ -1,0 +1,29 @@
+@if (activeExam(); as exam) {
+  <section class="active-exam-card">
+    <span class="active-tag">Active Exam</span>
+    <h5 class="exam-title">
+      {{ exam.courseName }}
+      <span class="title-highlight">{{ exam.title }}</span>
+    </h5>
+
+    <div class="card-footer">
+      <div class="time-box">
+        <span class="time-label">Time Remaining</span>
+        <span class="countdown">{{ countdown() }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="join-btn"
+        (click)="joinExam(exam.examId)"
+        [disabled]="IsAvailableToStart()"
+      >
+        Join Exam
+      </button>
+    </div>
+  </section>
+} @else {
+  <section class="empty">
+    <i class="bi bi-hourglass-split"></i>
+  </section>
+}
