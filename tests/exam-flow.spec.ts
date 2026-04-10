@@ -9,7 +9,7 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     try { 
       users = JSON.parse(usersString);
     } catch {
-      users = [];
+      users = []; 
     }
 
     const indexStr = process.env['USER_INDEX'] || '0';
