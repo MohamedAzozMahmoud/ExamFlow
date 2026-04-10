@@ -7,7 +7,7 @@
     "build": "ng build && npm run sentry:sourcemaps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org examflow --project javascript-angular ./dist && sentry-cli sourcemaps upload --org examflow --project javascript-angular ./dist",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org mohamed-kp --project javascript-angular ./dist && sentry-cli sourcemaps upload --org mohamed-kp --project javascript-angular ./dist",
     "test:e2e": "playwright test"
   },
   "prettier": {
@@ -30,7 +30,7 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
-    "@sentry/angular": "^10.47.0",
+    "@sentry/angular": "^10.48.0",
     "@sentry/browser": "^10.47.0",
     "@sentry/cli": "^2.58.5",
     "bootstrap": "^5.3.8",

@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   apiUrl: 'https://examflow.duckdns.org/api',
   baseUrl: 'https://examflow.duckdns.org',
-  sentryDsn: 'https://899811b95b5bd04001cfe84d72511c04@o4511180284166144.ingest.de.sentry.io/4511180288557136',
+  sentryDsn: 'https://09037d1cc5c7a45f3cfb088c36b46dfb@o4511197713072128.ingest.us.sentry.io/4511197714382848',
   sentryEnv: 'production',
 };
 
