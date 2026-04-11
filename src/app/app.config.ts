@@ -7,7 +7,7 @@ import {
   provideAppInitializer,
   inject,
 } from '@angular/core';
-import { provideRouter, Router } from '@angular/router';
+import { NoPreloading, provideRouter, Router, withPreloading } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
 import { routes } from './app.routes';
@@ -35,7 +35,7 @@ export const appConfig: ApplicationConfig = {
     //   inject(Sentry.TraceService);
     // }),
 
-    provideRouter(routes),
+     provideRouter(routes, withPreloading(NoPreloading)),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, loadingInterceptor])),
   ],
 };
