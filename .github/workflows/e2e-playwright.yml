@@ -3,7 +3,7 @@ name: E2E Playwright Stress Test (50 Users)
 on:
   workflow_dispatch: # يسمح لك بتشغيل الاختبار يدوياً بضغطة زر من GitHub
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -14,21 +14,106 @@ jobs:
       fail-fast: false # مهم جداً: لكي لا تتوقف باقي الأجهزة إذا فشل جهاز واحد
       matrix:
         # هنا نخبر GitHub بفتح 83 جهازاً (كل رقم يمثل جهاز)
-        user_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82]
+        user_index:
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+          ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "^20.17.0 || >=22.9.0"
+          node-version: '^20.17.0 || >=22.9.0'
           cache: npm
 
       - name: Install deps
         run: npm ci
 
-      - name: Install Playwright browsers 
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run E2E
@@ -36,7 +121,7 @@ jobs:
           E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}
           E2E_USERS_LIST: ${{ secrets.E2E_USERS_LIST }}
           # نمرر رقم الجهاز الحالي لملف الاختبار
-          USER_INDEX: ${{ matrix.user_index }} 
+          USER_INDEX: ${{ matrix.user_index }}
         run: npx playwright test
 
       - name: Upload report
