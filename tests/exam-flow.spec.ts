@@ -1,6 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 
-test.describe('ExamFlow Authentication Stress Test', () => {
+// ⛔ معطل مؤقتاً — يُستبدل بـ exam-load-test.js (K6 Hybrid)
+// لإعادة التفعيل: غيّر test.describe.skip إلى test.describe
+test.describe.skip('ExamFlow Authentication Stress Test', () => {
   test('should login and complete exam successfully with matrix user', async ({
     page,
   }: {

@@ -1,13 +1,17 @@
-name: E2E Playwright Stress Test (50 Users)
+name: E2E Playwright Stress Test (50 Users) [DISABLED]
+
+# ⛔ هذا الـ workflow معطل مؤقتاً — يُستبدل بـ load-test-hybrid.yml
+# لإعادة تفعيله: أزل الـ if: false من الـ job وأعد تفعيل triggers الـ push/pull_request
 
 on:
-  workflow_dispatch: # يسمح لك بتشغيل الاختبار يدوياً بضغطة زر من GitHub
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch: # يدوي فقط (لن يعمل بسبب if: false في الـ job)
+  # push:
+  #   branches: [main]
+  # pull_request:
 
 jobs:
   e2e:
+    if: false  # ⛔ معطل — أزل هذا السطر لإعادة التفعيل
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:

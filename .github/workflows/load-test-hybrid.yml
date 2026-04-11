@@ -1,0 +1,46 @@
+name: Hybrid Load Test (K6 - 83 VU)
+
+# ✅ هذا هو الـ workflow النشط — يشغل K6 Hybrid (HTTP + Browser)
+# شغله يدوياً من GitHub Actions tab
+
+on:
+  workflow_dispatch: # شغل يدوياً من Actions tab
+  # push:
+  #   branches: [ main ]
+
+jobs:
+  k6-hybrid-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup k6 with Browser support
+        uses: grafana/setup-k6-action@v1
+        with:
+          browser: true # يثبت Chromium تلقائياً
+
+      - name: Install Chromium dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+            libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 \
+            libxfixes3 libxrandr2 libgbm1 libasound2
+
+      - name: Run K6 Hybrid Load Test
+        env:
+          BASE_URL: https://examflowv2.netlify.app
+          K6_BROWSER_ENABLED: 'true'
+        run: |
+          k6 run tests/exam-load-test.js \
+            --out json=results.json \
+            -e BASE_URL=${{ secrets.E2E_BASE_URL || 'https://examflowv2.netlify.app' }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-hybrid-results
+          path: results.json

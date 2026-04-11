@@ -5,5 +5,7 @@
     "bsVersion": "5.3.7",
     "showSuggestions": true,
     "autoComplete": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
