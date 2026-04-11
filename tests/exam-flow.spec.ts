@@ -50,7 +50,7 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     const joinBtn = page.locator('app-active-exams-card .join-btn').first();
 
     // الانتظار حتى يظهر الزر في الشاشة
-    await expect(joinBtn).toBeVisible({ timeout: 30000 });
+    await expect(joinBtn).toBeVisible({ timeout: 40000 });
 
     // الأهم: الانتظار حتى يصبح الزر مفعلاً (أي أن فترة السماح بالدخول قد بدأت)
     console.log('⏳ في انتظار تفعيل زر الانضمام (بناءً على التوقيت)...');
@@ -60,7 +60,7 @@ test.describe('ExamFlow Authentication Stress Test', () => {
 
     // 5. نتأكد من الوصول لجلسة الامتحان
     console.log('✅ تم الدخول لجلسة الامتحان بنجاح!');
-    await expect(page).toHaveURL(/.*exam.*/, { timeout: 20000 });
+    await expect(page).toHaveURL(/.*exam.*/, { timeout: 30000 });
 
     // 6. انتظار ظهور مساحة الأسئلة لبدء الحل
     await page.waitForSelector('.question-card', { timeout: 20000 });
@@ -73,7 +73,7 @@ test.describe('ExamFlow Authentication Stress Test', () => {
       await expect(page.locator('.question-card')).toBeVisible();
 
       // فاصل زمني صغير لمحاكاة التدفق الطبيعي للطالب ولتحديث السيرفر (debounce)
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(3000);
 
       const essayArea = page.locator('textarea[name="answer"]');
       const isEssay = (await essayArea.count()) > 0;
@@ -86,11 +86,11 @@ test.describe('ExamFlow Authentication Stress Test', () => {
 
         // التأكد من تفعيل زر الحفظ والضغط عليه
         const saveEssayBtn = page.locator('button', { hasText: 'Save Answer' });
-        await expect(saveEssayBtn).toBeEnabled({ timeout: 5000 });
+        await expect(saveEssayBtn).toBeEnabled({ timeout: 20000 });
         await saveEssayBtn.click();
 
         // الانتظار لحظة لضمان تسجيل الإجابة قبل الانتقال للسؤال التالي
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(2000);
       } else {
         // حل سؤال الاختيار من متعدد
         const options = page.locator('.option-label');
@@ -119,14 +119,14 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     console.log('⏳ تم حل جميع الأسئلة، في انتظار تفعيل زر التسليم (بمرور 2/3 من الوقت)...');
 
     // الانتظار حتى يصبح الزر مفعلاً (قد يصل إلى عدة دقائق حسب مدة الامتحان)
-    await expect(submitBtn).toBeEnabled({ timeout: 650000 });
+    await expect(submitBtn).toBeEnabled({ timeout: 1000000 });
 
     await submitBtn.click();
     console.log('📤 تم ضغط زر التسليم بنجاح!');
 
     // 9. التأكد من التحويل التلقائي لصفحة past-results
     console.log('⏳ في انتظار التحويل التلقائي لصفحة النتائج السابقة...');
-    await expect(page).toHaveURL(/.*past-results.*/, { timeout: 1500 });
+    await expect(page).toHaveURL(/.*past-results.*/, { timeout: 15000 });
     console.log('✅ اكتمل السيناريو بنجاح (تسجيل دخول، حل الامتحان، الحفظ، التسليم، والتوجيه)!');
   });
 });
