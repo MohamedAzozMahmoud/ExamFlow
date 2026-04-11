@@ -45,23 +45,22 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     // 3. التأكد من الوصول للداشبورد بدلاً من شاشة تسجيل الدخول
     await expect(page).toHaveURL(/.*student.*/, { timeout: 5000 });
 
-    /*
     // 4. انتظار تحميل زر الانضمام للامتحان والتأكد من أنه مفعل (غير معطل)
     console.log('⏳ في انتظار ظهور امتحان متاح وتفعيل زر الانضمام...');
     const joinBtn = page.locator('app-active-exams-card .join-btn').first();
-    
+
     // الانتظار حتى يظهر الزر في الشاشة
     await expect(joinBtn).toBeVisible({ timeout: 30000 });
-    
+
     // الأهم: الانتظار حتى يصبح الزر مفعلاً (أي أن فترة السماح بالدخول قد بدأت)
     console.log('⏳ في انتظار تفعيل زر الانضمام (بناءً على التوقيت)...');
     await expect(joinBtn).toBeEnabled({ timeout: 300000 }); // قد ننتظر عدة دقائق حسب إعدادات الامتحان
-    
+
     await joinBtn.click();
 
     // 5. نتأكد من الوصول لجلسة الامتحان
     console.log('✅ تم الدخول لجلسة الامتحان بنجاح!');
-    // await expect(page).toHaveURL(.*exam.,{ timeout: 20000 });
+    await expect(page).toHaveURL(/.*exam.*/, { timeout: 20000 });
 
     // 6. انتظار ظهور مساحة الأسئلة لبدء الحل
     await page.waitForSelector('.question-card', { timeout: 20000 });
@@ -74,26 +73,28 @@ test.describe('ExamFlow Authentication Stress Test', () => {
       await expect(page.locator('.question-card')).toBeVisible();
 
       // فاصل زمني صغير لمحاكاة التدفق الطبيعي للطالب ولتحديث السيرفر (debounce)
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const essayArea = page.locator('textarea[name="answer"]');
-      const isEssay = await essayArea.count() > 0;
+      const isEssay = (await essayArea.count()) > 0;
 
       if (isEssay) {
         // حل سؤال المقال
-        await essayArea.fill(`إجابة آلية للاختبار المكثف (Stress Test) للطالب ${currentUser.user} للسؤال رقم ${i + 1}.`);
-        
+        await essayArea.fill(
+          `إجابة آلية للاختبار المكثف (Stress Test) للطالب ${currentUser.user} للسؤال رقم ${i + 1}.`,
+        );
+
         // التأكد من تفعيل زر الحفظ والضغط عليه
         const saveEssayBtn = page.locator('button', { hasText: 'Save Answer' });
         await expect(saveEssayBtn).toBeEnabled({ timeout: 5000 });
         await saveEssayBtn.click();
-        
+
         // الانتظار لحظة لضمان تسجيل الإجابة قبل الانتقال للسؤال التالي
         await page.waitForTimeout(500);
       } else {
         // حل سؤال الاختيار من متعدد
         const options = page.locator('.option-label');
-        if (await options.count() > 0) {
+        if ((await options.count()) > 0) {
           // يمكن تغيير index للإختيار العشوائي ولكن نختار الأول لتسريع الاختبار
           await options.first().click();
         }
@@ -102,11 +103,11 @@ test.describe('ExamFlow Authentication Stress Test', () => {
       // الانتقال للسؤال التالي إن لم نكن في الأخير
       if (i < totalQuestions - 1) {
         const nextBtn = page.getByRole('button', { name: 'Next' });
-        if (await nextBtn.isVisible() && await nextBtn.isEnabled()) {
-           await nextBtn.click();
+        if ((await nextBtn.isVisible()) && (await nextBtn.isEnabled())) {
+          await nextBtn.click();
         } else {
-           console.log(`⚠️ الزر 'Next' غير متوفر في السؤال رقم ${i + 1}`);
-           break; // نخرج من الحلقة إذا انتهت الأسئلة قبل الـ 20
+          console.log(`⚠️ الزر 'Next' غير متوفر في السؤال رقم ${i + 1}`);
+          break; // نخرج من الحلقة إذا انتهت الأسئلة قبل الـ 20
         }
       }
     }
@@ -116,18 +117,16 @@ test.describe('ExamFlow Authentication Stress Test', () => {
     // 8. الانتظار حتى تفعيل زر التسليم (بعد مرور ثلثي الوقت) ثم التسليم
     const submitBtn = page.locator('.submit-btn');
     console.log('⏳ تم حل جميع الأسئلة، في انتظار تفعيل زر التسليم (بمرور 2/3 من الوقت)...');
-    
+
     // الانتظار حتى يصبح الزر مفعلاً (قد يصل إلى عدة دقائق حسب مدة الامتحان)
-    await expect(submitBtn).toBeEnabled({ timeout: 500000 }); 
-    
+    await expect(submitBtn).toBeEnabled({ timeout: 650000 });
+
     await submitBtn.click();
     console.log('📤 تم ضغط زر التسليم بنجاح!');
-    
+
     // 9. التأكد من التحويل التلقائي لصفحة past-results
     console.log('⏳ في انتظار التحويل التلقائي لصفحة النتائج السابقة...');
-    await expect(page).toHaveURL(/.*student\/past-results., { timeout: 30000 });
-    
+    await expect(page).toHaveURL(/.*past-results.*/, { timeout: 1500 });
     console.log('✅ اكتمل السيناريو بنجاح (تسجيل دخول، حل الامتحان، الحفظ، التسليم، والتوجيه)!');
-    */
   });
 });
